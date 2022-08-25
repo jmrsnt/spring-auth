@@ -1,0 +1,61 @@
+app:
+  storage: ${STORAGE_PATH:./tmp}
+
+server:
+  port: ${SERVER_PORT:8071}
+
+spring:
+  application:
+    name: auth
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.hbm2ddl.auto: validate
+      hibernate.current_session_context_class: thread
+  datasource:
+    url: jdbc:oracle:thin:@${DB_HOST:localhost}:${DB_PORT:1521}:${DB_SID:XEPDB1}
+    username: ${DB_USER:auth}
+    password: ${DB_PWD:auth}
+    driver-class-name: oracle.jdbc.OracleDriver
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  health:
+    ldap:
+      enabled: false
+
+logging:
+  level:
+    root: info
+  file:
+    name: ${app.storage}/logs/${spring.application.name}.log
+    path: ${app.storage}/logs
+
+---
+spring:
+  config:
+    activate:
+      on-profile: eureka
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOST:localhost}
+    instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+    preferIpAddress: true
+  client:
+    enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    healthCheck:
+      enabled: true
+    service-url:
+      defaultZone: http://${EUREKA_USERNAME:username}:${EUREKA_PASSWORD:password}@${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}${EUREKA_URI:/eureka}
+
+---
