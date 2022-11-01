@@ -114,7 +114,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<!-- endregion -->
 
@@ -202,6 +201,12 @@
 							<HTTPS_PROXY>${http.proxy}</HTTPS_PROXY>
 						</env>
 					</image>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>

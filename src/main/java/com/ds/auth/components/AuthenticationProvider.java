@@ -34,9 +34,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
 
         try {
             User user = userService.getUserByUsername(username);
-
             // @TODO Implementar Autenticação
-
             return new UsernamePasswordAuthenticationToken(user.getUsername(), password, user.getAuthorities());
         } catch (Exception ex) {
             logger.error("Ocorreu um erro ao realizar a autenticação.", ex);
